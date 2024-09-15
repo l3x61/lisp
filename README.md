@@ -4,7 +4,7 @@ experimental lisp interpreter
 ## Grammar
 ```
 NUMBER
-    : [0-9]+
+    : // whatever std.fmt.parseFloat() accepts
     ;
 
 STRING
@@ -12,7 +12,7 @@ STRING
     ;
 
 SYMBOL
-    : [a-zA-Z0-9_+-*/]+
+    : [a-zA-Z0-9._+-*/]+
     ;
 
 program
