@@ -83,7 +83,7 @@ pub const Lexer = struct {
     fn isSymbol(self: *Lexer) bool {
         const c = self.char() orelse return false;
         return switch (c) {
-            '0'...'9', 'a'...'z', 'A'...'Z', '.', '_', '-', '+', '*', '/' => true,
+            '0'...'9', 'a'...'z', 'A'...'Z', '.', '_', '-', '+', '*', '/', '=' => true,
             else => false,
         };
     }
@@ -218,12 +218,17 @@ test "open string" {
     try runTest(@src().fn_name[5..], source, &tokens);
 }
 
-test "invalid character" {
+test "list" {
     const source =
-        \\@
+        \\(list 1 2 3)
     ;
     const tokens = [_]Token{
-        Token.init(.ErrorCharacter, source[0..0], null),
+        Token.init(.LeftParen, source[0..1], null),
+        Token.init(.Symbol, source[1..5], null),
+        Token.init(.Number, source[6..7], 1),
+        Token.init(.Number, source[8..9], 2),
+        Token.init(.Number, source[10..11], 3),
+        Token.init(.RightParen, source[11..12], null),
         Token.init(.EndOfFile, source[0..0], null),
     };
     try runTest(@src().fn_name[5..], source, &tokens);
